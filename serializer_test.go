@@ -219,3 +219,55 @@ func TestMapDeserializeComplexSpecification(t *testing.T) {
 
 	assert.Equal(t, expected, s.Deserialize(data))
 }
+
+func TestSQLSerializeAndSpecification(t *testing.T) {
+	s := NewSQLSerializer()
+	s.RegisterTypeSerializer(reflect.TypeOf(TrueSpecification{}), func(s Specification) interface{} {
+		return "TRUE"
+	})
+
+	spec := TrueSpecification{}.And(TrueSpecification{})
+
+	expected := "(TRUE AND TRUE)"
+
+	assert.Equal(t, expected, s.Serialize(spec))
+}
+
+func TestSQLSerializeOrSpecification(t *testing.T) {
+	s := NewSQLSerializer()
+	s.RegisterTypeSerializer(reflect.TypeOf(TrueSpecification{}), func(s Specification) interface{} {
+		return "TRUE"
+	})
+
+	spec := TrueSpecification{}.Or(TrueSpecification{})
+
+	expected := "(TRUE OR TRUE)"
+
+	assert.Equal(t, expected, s.Serialize(spec))
+}
+
+func TestSQLSerializeNotSpecification(t *testing.T) {
+	s := NewSQLSerializer()
+	s.RegisterTypeSerializer(reflect.TypeOf(TrueSpecification{}), func(s Specification) interface{} {
+		return "TRUE"
+	})
+
+	spec := TrueSpecification{}.Not()
+
+	expected := "(NOT (TRUE))"
+
+	assert.Equal(t, expected, s.Serialize(spec))
+}
+
+func TestSQLSerializeComplexSpecification(t *testing.T) {
+	s := NewSQLSerializer()
+	s.RegisterTypeSerializer(reflect.TypeOf(TrueSpecification{}), func(s Specification) interface{} {
+		return "TRUE"
+	})
+
+	spec := TrueSpecification{}.Or(TrueSpecification{}.And(TrueSpecification{}.Not()))
+
+	expected := "(TRUE OR (TRUE AND (NOT (TRUE))))"
+
+	assert.Equal(t, expected, s.Serialize(spec))
+}

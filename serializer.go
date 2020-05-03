@@ -2,6 +2,7 @@ package serification
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -43,6 +44,10 @@ func (se *Serializer) Deserialize(d map[string]interface{}) Specification {
 func (se *Serializer) RegisterType(tst reflect.Type, tsFn TypeSerializer, tdt string, tdFn TypeDeserializer) {
 	se.typeSerializers[tst] = tsFn
 	se.typeDeserializers[tdt] = tdFn
+}
+
+func (se *Serializer) RegisterTypeSerializer(typ reflect.Type, fn TypeSerializer) {
+	se.typeSerializers[typ] = fn
 }
 
 func NewMapSerializer() *Serializer {
@@ -102,6 +107,32 @@ func NewMapSerializer() *Serializer {
 
 	se.typeSerializers = ts
 	se.typeDeserializers = ds
+
+	return &se
+}
+
+func NewSQLSerializer() *Serializer {
+	se := Serializer{}
+
+	ts := map[reflect.Type]TypeSerializer{
+		reflect.TypeOf(AndSpecification{}): func(s Specification) interface{} {
+			spec := s.(AndSpecification)
+
+			return fmt.Sprintf("(%s AND %s)", se.Serialize(spec.Left), se.Serialize(spec.Right))
+		},
+		reflect.TypeOf(OrSpecification{}): func(s Specification) interface{} {
+			spec := s.(OrSpecification)
+
+			return fmt.Sprintf("(%s OR %s)", se.Serialize(spec.Left), se.Serialize(spec.Right))
+		},
+		reflect.TypeOf(NotSpecification{}): func(s Specification) interface{} {
+			spec := s.(NotSpecification)
+
+			return fmt.Sprintf("(NOT (%s))", se.Serialize(spec.Subject))
+		},
+	}
+
+	se.typeSerializers = ts
 
 	return &se
 }

@@ -13,6 +13,38 @@ type Serializer struct {
 	typeDeserializers map[string]TypeDeserializer
 }
 
+func (se *Serializer) Serialize(s Specification) interface{} {
+	specType := reflect.TypeOf(s)
+
+	ser, ok := se.typeSerializers[specType]
+
+	if !ok {
+		panic(errors.New("type serializer not found for: " + specType.String()))
+	}
+
+	return ser(s)
+}
+
+func (se *Serializer) Deserialize(d map[string]interface{}) Specification {
+	specType, ok := d["type"].(string)
+	if !ok {
+		panic(errors.New("invalid structure, `type` key not found"))
+	}
+
+	deser, ok := se.typeDeserializers[specType]
+
+	if !ok {
+		panic(errors.New("type deserializer not found for: " + specType))
+	}
+
+	return deser(d)
+}
+
+func (se *Serializer) RegisterType(tst reflect.Type, tsFn TypeSerializer, tdt string, tdFn TypeDeserializer) {
+	se.typeSerializers[tst] = tsFn
+	se.typeDeserializers[tdt] = tdFn
+}
+
 func NewMapSerializer() *Serializer {
 	se := Serializer{}
 
@@ -72,36 +104,4 @@ func NewMapSerializer() *Serializer {
 	se.typeDeserializers = ds
 
 	return &se
-}
-
-func (se *Serializer) Serialize(s Specification) interface{} {
-	specType := reflect.TypeOf(s)
-
-	ser, ok := se.typeSerializers[specType]
-
-	if !ok {
-		panic(errors.New("type serializer not found for: " + specType.String()))
-	}
-
-	return ser(s)
-}
-
-func (se *Serializer) Deserialize(d map[string]interface{}) Specification {
-	specType, ok := d["type"].(string)
-	if !ok {
-		panic(errors.New("invalid structure, `type` key not found"))
-	}
-
-	deser, ok := se.typeDeserializers[specType]
-
-	if !ok {
-		panic(errors.New("type deserializer not found for: " + specType))
-	}
-
-	return deser(d)
-}
-
-func (se *Serializer) RegisterType(tst reflect.Type, tsFn TypeSerializer, tdt string, tdFn TypeDeserializer) {
-	se.typeSerializers[tst] = tsFn
-	se.typeDeserializers[tdt] = tdFn
 }

@@ -1,4 +1,4 @@
-module serification
+module github.com/maciejtarnowski/serification
 
 go 1.14
 

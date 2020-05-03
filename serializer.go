@@ -5,7 +5,7 @@ import (
 	"reflect"
 )
 
-type TypeSerializer func(Specification) map[string]interface{}
+type TypeSerializer func(Specification) interface{}
 type TypeDeserializer func(map[string]interface{}) Specification
 
 type Serializer struct {
@@ -49,7 +49,7 @@ func NewMapSerializer() *Serializer {
 	se := Serializer{}
 
 	ts := map[reflect.Type]TypeSerializer{
-		reflect.TypeOf(AndSpecification{}): func(s Specification) map[string]interface{} {
+		reflect.TypeOf(AndSpecification{}): func(s Specification) interface{} {
 			spec := s.(AndSpecification)
 			data := make(map[string]interface{})
 
@@ -59,7 +59,7 @@ func NewMapSerializer() *Serializer {
 
 			return data
 		},
-		reflect.TypeOf(OrSpecification{}): func(s Specification) map[string]interface{} {
+		reflect.TypeOf(OrSpecification{}): func(s Specification) interface{} {
 			spec := s.(OrSpecification)
 			data := make(map[string]interface{})
 
@@ -69,7 +69,7 @@ func NewMapSerializer() *Serializer {
 
 			return data
 		},
-		reflect.TypeOf(NotSpecification{}): func(s Specification) map[string]interface{} {
+		reflect.TypeOf(NotSpecification{}): func(s Specification) interface{} {
 			spec := s.(NotSpecification)
 			data := make(map[string]interface{})
 

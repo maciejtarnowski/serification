@@ -24,8 +24,8 @@ func (t TrueSpecification) Not() Specification {
 	return NotSpecification{Subject: t}
 }
 
-func TestSerializeAndSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapSerializeAndSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -47,8 +47,8 @@ func TestSerializeAndSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Serialize(spec))
 }
 
-func TestSerializeOrSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapSerializeOrSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -70,8 +70,8 @@ func TestSerializeOrSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Serialize(spec))
 }
 
-func TestSerializeNotSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapSerializeNotSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -90,8 +90,8 @@ func TestSerializeNotSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Serialize(spec))
 }
 
-func TestSerializeComplexSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapSerializeComplexSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -122,8 +122,8 @@ func TestSerializeComplexSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Serialize(spec))
 }
 
-func TestDeserializeAndSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapDeserializeAndSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -145,8 +145,8 @@ func TestDeserializeAndSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Deserialize(data))
 }
 
-func TestDeserializeOrSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapDeserializeOrSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -168,8 +168,8 @@ func TestDeserializeOrSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Deserialize(data))
 }
 
-func TestDeserializeNotSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapDeserializeNotSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {
@@ -188,8 +188,8 @@ func TestDeserializeNotSpecification(t *testing.T) {
 	assert.Equal(t, expected, s.Deserialize(data))
 }
 
-func TestDeserializeComplexSpecification(t *testing.T) {
-	s := NewSerializer()
+func TestMapDeserializeComplexSpecification(t *testing.T) {
+	s := NewMapSerializer()
 	s.RegisterType(reflect.TypeOf(TrueSpecification{}), func(s Specification) map[string]interface{} {
 		return map[string]interface{}{"type": "true"}
 	}, "true", func(m map[string]interface{}) Specification {

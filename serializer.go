@@ -13,7 +13,7 @@ type Serializer struct {
 	typeDeserializers map[string]TypeDeserializer
 }
 
-func NewSerializer() *Serializer {
+func NewMapSerializer() *Serializer {
 	se := Serializer{}
 
 	ts := map[reflect.Type]TypeSerializer{

@@ -4,11 +4,11 @@ _serializable + specification = serification_
 
 ## Problem
 
-* Zapis i odczyt struktury przypominającej Specification Pattern do JSON-a
+* Serializing Specifications to JSON and SQL, unserializing JSON to Specifications
 
-## Rozwiązanie
+## Example
 
-Kod zamieniający:
+Converting:
 
 ```go
 package main
@@ -16,7 +16,7 @@ package main
 var spec = PostCreatedBetween("2020-01-01", "2020-01-31").And(PostHasTags("tag_A", "tag_B").Or(PostHasTags("tag_A", "tag_C")))
 ```
 
-na:
+into:
 
 ```json
 {
@@ -40,4 +40,8 @@ na:
 }
 ```
 
-i z powrotem
+and vice versa.
+
+## License
+
+MIT
